@@ -7,25 +7,25 @@ values.yaml
 
 ....
 
-apps:
-  app1:
-    name: "app1"
-    containerPort: 80
-    livenessProbePath: /
-    readinessProbePath: /
-    image:
-      repository: nginx
-      pullPolicy: IfNotPresent
-      tag: ""
-
-  app2:
-    name: "app2"
-    image:
-      repository: prydonius/todo
-      pullPolicy: IfNotPresent      
-      tag: 1.0.0
-    containerPort: 80
-    readinessProbePath: /
+apps: \
+  app1: \
+    name: "app1" \
+    containerPort: 80 \
+    livenessProbePath: / \
+    readinessProbePath: / \
+    image: \
+      repository: nginx \
+      pullPolicy: IfNotPresent \
+      tag: "" \
+  app2: \
+    name: "app2" \
+    containerPort: 80 \
+    livenessProbePath: / \
+    readinessProbePath: / \
+    image: \
+      repository: prydonius/todo \
+      pullPolicy: IfNotPresent \
+      tag: 1.0.0 \
 
 
 
