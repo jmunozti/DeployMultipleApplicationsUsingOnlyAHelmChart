@@ -1,4 +1,4 @@
-# DeployMultipleApplicationsUsingOnlyAHelmChart
+# Deploy Multiple Applications Using Only A Helm Chart
 
 This Helm chart deploy multiple applications using the apps node declared in the file values.yaml
 
@@ -6,7 +6,7 @@ This Helm chart deploy multiple applications using the apps node declared in the
 
 Execute these commands:
 
-helm install all all/ \
+helm install all all/
 kubectl get all
 
 Enjoy :)
