@@ -1,0 +1,19 @@
+{{- $root := . -}}
+{{- range  $apps := .Values.apps }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $apps.name }}
+  labels:
+    {{- include "all.labels" $ | nindent 4 }}
+spec:
+  type: {{ $root.Values.service.type }}
+  ports:
+    - port: {{ $root.Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "all.selectorLabels" $ | nindent 4 }}
+---
+  {{- end}}

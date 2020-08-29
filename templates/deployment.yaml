@@ -1,0 +1,65 @@
+{{- $root := . -}}
+{{- range  $apps := $root.Values.apps }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $apps.name }}
+  labels:
+    {{- include "all.labels" $ | nindent 4 }}
+spec:
+{{- if not $root.Values.autoscaling.enabled }}
+  replicas: {{ $root.Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "all.selectorLabels" $ | nindent 6 }}
+  template:
+    metadata:
+    {{- with $root.Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "all.selectorLabels" $ | nindent 8 }}
+    spec:
+      {{- with $root.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "all.serviceAccountName" $ }}
+      securityContext:
+        {{- toYaml $root.Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ $root.Chart.Name }}
+          securityContext:
+            {{- toYaml $root.Values.securityContext | nindent 12 }}
+          image: "{{ $apps.image.repository }}:{{ $apps.image.tag | default $root.Chart.AppVersion }}"
+          imagePullPolicy: {{ $root.Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{$apps.containerPort}}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ $apps.livenessProbePath }}
+              port: http
+          readinessProbe:
+            httpGet:
+              path: {{ $apps.readinessProbeProbePath }}
+              port: http
+          resources:
+            {{- toYaml $root.Values.resources | nindent 12 }}
+      {{- with $root.Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $root.Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $root.Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+  {{- end}}
