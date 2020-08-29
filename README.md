@@ -1,6 +1,6 @@
 # Deploy Multiple Applications Using Only A Helm Chart
 
-This Helm chart deploy multiple applications using the apps node declared in the file values.yaml
+This Helm chart deploys multiple applications using the apps node declared in the file values.yaml
 
 # Usage
 
